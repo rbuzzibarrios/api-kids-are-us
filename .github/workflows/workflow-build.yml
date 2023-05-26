@@ -3,8 +3,8 @@ name: Build workflow
 on:
   workflow_call:
     secrets:
-      SLACK_WEBHOOK_URL:
-        required: true
+      test:
+        required: false
 
 jobs:
   build:
