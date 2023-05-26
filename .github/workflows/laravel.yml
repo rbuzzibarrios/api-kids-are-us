@@ -1,0 +1,40 @@
+name: API-KIDS-R-US
+
+on:
+  #  push:
+  #    branches: [ "main" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  laravel-build:
+    uses: ./.github/workflows/workflow-build.yml
+    secrets: inherit
+
+  laravel-lint-code:
+    needs: laravel-build
+    runs-on: ubuntu-latest
+  steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+
+    - uses: actions/checkout@v3
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      id: install-dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: PHP Pint
+      id: php-pint
+      run: vendor/bin/pint --test
