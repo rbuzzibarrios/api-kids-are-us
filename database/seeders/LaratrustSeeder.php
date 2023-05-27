@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
@@ -12,10 +14,8 @@ class LaratrustSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->truncateLaratrustTables();
 
@@ -25,15 +25,18 @@ class LaratrustSeeder extends Seeder
             $this->command->error('The configuration has not been published. Did you run `php artisan vendor:publish --tag="laratrust-seeder"`');
             $this->command->line('');
 
-            return false;
+            return;
         }
 
-        $mapPermission = collect(config('laratrust_seeder.permissions_map'));
+        /** @var array<string, string> $permissions */
+        $permissions = config('laratrust_seeder.permissions_map');
+
+        $mapPermission = collect($permissions);
 
         foreach ($config as $key => $modules) {
 
             // Create a new role
-            $role = \App\Models\Role::firstOrCreate([
+            $role = Role::firstOrCreate([
                 'name' => $key,
                 'display_name' => ucwords(str_replace('_', ' ', $key)),
                 'description' => ucwords(str_replace('_', ' ', $key)),
@@ -49,7 +52,7 @@ class LaratrustSeeder extends Seeder
 
                     $permissionValue = $mapPermission->get($perm);
 
-                    $permissions[] = \App\Models\Permission::firstOrCreate([
+                    $permissions[] = Permission::firstOrCreate([
                         'name' => $module.'-'.$permissionValue,
                         'display_name' => ucfirst($permissionValue).' '.ucfirst($module),
                         'description' => ucfirst($permissionValue).' '.ucfirst($module),

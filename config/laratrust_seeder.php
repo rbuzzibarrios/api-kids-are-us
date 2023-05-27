@@ -20,7 +20,6 @@ return [
             'profile' => 'r,u',
             'products' => 'c,r,u,d,sp,ns',
             'sales' => 'tp',
-
         ],
         'editor' => [
             'profile' => 'r,u',
