@@ -45,10 +45,10 @@ jobs:
     needs: laravel-lint-code
     uses: ./.github/workflows/workflow-build.yml
     secrets: inherit
-    - steps:
-        - name: Running Functional and Unit Tests
-          id: running-tests
-          run: php artisan test -p --coverage
-          env:
-            DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-            REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+    steps:
+      - name: Running Functional and Unit Tests
+        id: running-tests
+        run: php artisan test -p --coverage
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
