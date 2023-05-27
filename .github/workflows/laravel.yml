@@ -38,3 +38,7 @@ jobs:
       - name: PHP Pint test
         id: php-pint-test
         run: vendor/bin/pint --test
+
+      - name: PHPSTAN CODE ANALYZE
+        id: phpstan-analyze
+        run: vendor/bin/phpstan analyse --memory-limit=2G --no-progress
