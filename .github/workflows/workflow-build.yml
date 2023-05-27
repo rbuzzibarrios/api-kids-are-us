@@ -84,7 +84,7 @@ jobs:
 
       - name: Start Api Web Server
         id: start-server
-        run: php artisan serve
+        run: php artisan serve &
 
       - name: Upload artifacts
         uses: actions/upload-artifact@master
