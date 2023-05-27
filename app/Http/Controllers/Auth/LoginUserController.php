@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginUserController extends Controller
 {
-    /**
-     * @param LoginUserRequest $request
-     * @return JsonResponse
-     */
     public function __invoke(LoginUserRequest $request): JsonResponse
     {
         if (! Auth::attempt($request->validated())) {
