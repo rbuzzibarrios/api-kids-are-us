@@ -19,6 +19,7 @@ return [
         'administrator' => [
             'profile' => 'r,u',
             'products' => 'c,r,u,d,sp,ns',
+            'product_categories' => 'c,r,u,d',
             'sales' => 'tp',
         ],
         'editor' => [
