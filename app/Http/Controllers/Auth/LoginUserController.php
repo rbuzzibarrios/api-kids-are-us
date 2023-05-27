@@ -14,7 +14,7 @@ class LoginUserController extends Controller
      */
     public function __invoke(LoginUserRequest $request)
     {
-        if (!Auth::attempt($request->validated())) {
+        if (! Auth::attempt($request->validated())) {
             return response()->json(['message' => __('auth.failed')], Response::HTTP_BAD_REQUEST);
         }
 
