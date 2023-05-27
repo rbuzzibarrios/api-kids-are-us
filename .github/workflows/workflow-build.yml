@@ -26,11 +26,11 @@ jobs:
       redis:
         image: redis
         ports:
-          - 6379/tcp
+          - 6379:6379
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
 
@@ -67,9 +67,13 @@ jobs:
       - run: find storage -type d -exec chmod 755 {} \;
       - run: find bootstrap/cache -type d -exec chmod 755 {} \;
 
+      - name: Optimze application
+        id: optimize-application
+        run: php artisan optimize
+
       - name: Migrate database application
         id: migrate-database-application
-        run: php artisan migrate
+        run: php artisan migrate:fresh
 
       - name: Seed database application
         id: seed-database-application
@@ -78,3 +82,10 @@ jobs:
       - name: Start Api Web Server
         id: start-server
         run: php artisan serve &
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
