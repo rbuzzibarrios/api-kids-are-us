@@ -67,9 +67,13 @@ jobs:
       - run: find storage -type d -exec chmod 755 {} \;
       - run: find bootstrap/cache -type d -exec chmod 755 {} \;
 
+      - name: Optimze application
+        id: optimize-application
+        run: php artisan optimize
+
       - name: Migrate database application
         id: migrate-database-application
-        run: php artisan migrate
+        run: php artisan migrate:fresh
 
       - name: Seed database application
         id: seed-database-application
