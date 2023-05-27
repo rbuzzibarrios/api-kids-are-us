@@ -15,7 +15,7 @@ jobs:
     needs: laravel-build
     runs-on: ubuntu-latest
     steps:
-      - uses: shivammathur/setup-php@v3
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
           php-version: '8.2'
 
@@ -35,6 +35,6 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: PHP Pint
-        id: php-pint
+      - name: PHP Pint test
+        id: php-pint-test
         run: vendor/bin/pint --test
