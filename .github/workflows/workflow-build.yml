@@ -70,7 +70,7 @@ jobs:
       - run: find bootstrap/cache -type d -exec chmod 755 {} \;
 
       - name: Migrate database application
-        id: migrate-database-applicatuin
+        id: migrate-database-application
         run: php artisan migrate
 
       - name: Seed database application
