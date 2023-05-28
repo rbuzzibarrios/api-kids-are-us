@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
