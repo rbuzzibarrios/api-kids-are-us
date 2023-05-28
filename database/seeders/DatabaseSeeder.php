@@ -15,5 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LaratrustSeeder::class);
         $this->call(ProductCategorySeeder::class);
 
+        if (app()->environment('testing') || app()->isLocal()) {
+            $this->call(ProductSeeder::class);
+        }
     }
 }
