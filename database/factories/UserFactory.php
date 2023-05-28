@@ -6,9 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends Factory
- */
 class UserFactory extends Factory
 {
     /**
@@ -40,7 +37,7 @@ class UserFactory extends Factory
     public function userRole(): static
     {
         return $this->state(fn (array $attributes) => [
-        ])->afterCreating(function (User $user) {
+        ])->afterCreating(function (User $user) { // @phpstan-ignore-line
             $user->addRole('user');
         });
     }

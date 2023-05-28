@@ -36,7 +36,7 @@ class Product extends Model
 
     //region accessors
 
-    public function getTitleAttribute()
+    public function getTitleAttribute(): string
     {
         return $this->name;
     }

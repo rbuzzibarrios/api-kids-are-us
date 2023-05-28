@@ -6,9 +6,6 @@ use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\WithFaker;
 
-/**
- * @extends Factory
- */
 class ProductFactory extends Factory
 {
     use WithFaker;

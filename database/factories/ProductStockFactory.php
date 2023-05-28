@@ -5,9 +5,6 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\WithFaker;
 
-/**
- * @extends Factory
- */
 class ProductStockFactory extends Factory
 {
     use WithFaker;
