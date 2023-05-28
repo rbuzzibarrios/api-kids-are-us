@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -29,25 +30,29 @@ class Product extends Model
     ];
 
     protected $appends = [
-        'title'
+        'title',
     ];
 
-    #region accessors
+    //region accessors
 
     public function getTitleAttribute()
     {
         return $this->name;
     }
 
-    #endregion
+    //endregion
 
-
-    #region relations
+    //region relations
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
-    #endregion
+    public function stock(): HasOne
+    {
+        return $this->hasOne(ProductStock::class, 'product_id', 'id');
+    }
+
+    //endregion
 }
