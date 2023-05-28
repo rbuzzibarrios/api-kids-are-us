@@ -13,5 +13,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(LaratrustSeeder::class);
+        $this->call(ProductCategorySeeder::class);
+
+        if (app()->environment('testing') || app()->isLocal()) {
+            $this->call(ProductSeeder::class);
+        }
     }
 }
