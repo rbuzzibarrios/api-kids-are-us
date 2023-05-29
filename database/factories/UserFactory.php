@@ -42,11 +42,19 @@ class UserFactory extends Factory
         });
     }
 
-    public function userAdmin(): static
+    public function administrator(): static
     {
         return $this->state(fn (array $attributes) => [
         ])->afterCreating(function (User $user) { // @phpstan-ignore-line
             $user->addRole('administrator');
+        });
+    }
+
+    public function editor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+        ])->afterCreating(function (User $user) { // @phpstan-ignore-line
+            $user->addRole('editor');
         });
     }
 }

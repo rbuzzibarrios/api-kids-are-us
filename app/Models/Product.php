@@ -36,6 +36,11 @@ class Product extends Model
         'title',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'sku';
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -53,7 +58,7 @@ class Product extends Model
 
     //region accessors and mutators
 
-    public function getTitleAttribute(): string
+    public function getTitleAttribute(): string|null
     {
         return $this->name;
     }

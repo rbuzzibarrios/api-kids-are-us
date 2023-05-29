@@ -17,17 +17,21 @@ class StoreProductTest extends TestCase
     public function test_should_validate_require_fields(): void
     {
         /** @var Authenticatable $administratorUser */
-        $administratorUser = User::factory()->userAdmin()->create();
+        $administratorUser = User::factory()->administrator()->create();
 
         $this->actingAs($administratorUser);
 
-        $this->postJson(route('store.product'))->assertUnprocessable();
+        $this->postJson(route('store.product'), [])->assertUnprocessable();
+        $this->postJson(route('store.product'), ['tags' => [5, 6, 7]])->assertUnprocessable();
+        $this->postJson(route('store.product'), ['name' => '', 'price' => null, 'description' => ''])->assertUnprocessable();
+        $this->postJson(route('store.product'), ['name' => 'test name', 'gosh' => 'goth'])->assertUnprocessable();
+        $this->postJson(route('store.product'), ['namex' => 'test name'])->assertUnprocessable();
     }
 
     public function test_should_store_product_successfully(): void
     {
         /** @var Authenticatable $administratorUser */
-        $administratorUser = User::factory()->userAdmin()->create();
+        $administratorUser = User::factory()->administrator()->create();
 
         $this->actingAs($administratorUser);
 

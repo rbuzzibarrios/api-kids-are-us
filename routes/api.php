@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function () {
     Route::post('product', [ProductController::class, 'store'])->name('store.product');
+    Route::put('product/{product}', [ProductController::class, 'update'])->name('update.product');
 });
