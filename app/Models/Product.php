@@ -23,22 +23,38 @@ class Product extends Model
         'additional_information',
         'rate',
         'images',
+        'category',
     ];
 
     protected $casts = [
         'tags' => 'array',
         'images' => 'array',
+        'price' => 'decimal:2',
     ];
 
     protected $appends = [
         'title',
     ];
 
-    //region accessors
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Product $product) {
+            $product->stock()->create(request()->only('quantity'))->save();
+        });
+    }
+
+    //region accessors and mutators
 
     public function getTitleAttribute(): string
     {
         return $this->name;
+    }
+
+    public function setCategoryAttribute(mixed $value): void
+    {
+        $this->attributes['product_category_id'] = $value;
     }
 
     //endregion

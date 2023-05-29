@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
+    public function __construct(private ProductRepositoryInterface $productRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +28,24 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request): JsonResponse
     {
-        return response()->json();
+        try {
+            \DB::beginTransaction();
+
+            $product = $this->productRepository->create($request->validated())->load('category', 'stock');
+
+            \DB::commit();
+
+            return response()->success([
+                'message' => __('product.store.success'),
+                ...compact('product'),
+            ]);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            \DB::rollBack();
+
+            return response()->error(__('product.store.error'));
+        }
     }
 
     /**

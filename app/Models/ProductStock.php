@@ -13,6 +13,10 @@ class ProductStock extends Model
 
     protected $table = 'product_stock';
 
+    protected $fillable = [
+        'quantity',
+    ];
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id');
