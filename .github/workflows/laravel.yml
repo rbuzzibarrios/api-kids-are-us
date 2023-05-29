@@ -3,6 +3,13 @@ name: API-KIDS-R-US
 on:
   pull_request:
     branches: [ "main", "dev" ]
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'test input'
+        requires: false
+        default: 'test'
+        type: 'string'
 
 jobs:
   laravel-build:

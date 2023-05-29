@@ -51,7 +51,7 @@ class Product extends Model
 
         static::updated(function (Product $product) {
             if (request()->request->has('quantity')) {
-                $product->stock()->update(['quantity' => request()->request->get('quantity')]);
+                $product->stock()->update(request()->only('quantity'));
             }
         });
     }
