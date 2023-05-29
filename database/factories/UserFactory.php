@@ -34,7 +34,7 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function userRole(): static
+    public function user(): static
     {
         return $this->state(fn (array $attributes) => [
         ])->afterCreating(function (User $user) { // @phpstan-ignore-line
