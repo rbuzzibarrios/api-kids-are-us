@@ -61,7 +61,16 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
-        return response()->json();
+        try {
+            $product = $this->productRepository->update($product, $request->validated());
+
+            return response()->success([
+                'message' => __('product.update.success'),
+                ...compact('product'),
+            ]);
+        } catch (\Exception $exception) {
+            return response()->error(__('product.update.error'));
+        }
     }
 
     /**
