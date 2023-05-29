@@ -41,4 +41,12 @@ class UserFactory extends Factory
             $user->addRole('user');
         });
     }
+
+    public function userAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+        ])->afterCreating(function (User $user) { // @phpstan-ignore-line
+            $user->addRole('administrator');
+        });
+    }
 }
