@@ -36,6 +36,11 @@ class Product extends Model
         'title',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'sku';
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -43,11 +48,17 @@ class Product extends Model
         static::created(function (Product $product) {
             $product->stock()->create(request()->only('quantity'))->save();
         });
+
+        static::updated(function (Product $product) {
+            if (request()->request->has('quantity')) {
+                $product->stock()->update(request()->only('quantity'));
+            }
+        });
     }
 
     //region accessors and mutators
 
-    public function getTitleAttribute(): string
+    public function getTitleAttribute(): string|null
     {
         return $this->name;
     }
