@@ -53,7 +53,15 @@ class ProductController extends Controller
      */
     public function show(Product $product): JsonResponse
     {
-        return response()->json();
+        try {
+            $product->load(['stock', 'category'])->refresh();
+
+            return response()->success(compact('product'));
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            return response()->error(__('product.show.error'));
+        }
     }
 
     /**
@@ -62,9 +70,13 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         try {
+            \DB::beginTransaction();
+
             if ($this->productRepository->update($product, $request->validated())) {
                 $product->load('stock', 'category')->refresh();
             }
+
+            \DB::commit();
 
             return response()->success([
                 'message' => __('product.update.success'),
@@ -72,6 +84,8 @@ class ProductController extends Controller
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            \DB::rollBack();
 
             return response()->error(__('product.update.error'));
         }
@@ -82,6 +96,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product): JsonResponse
     {
-        return response()->json();
+        try {
+            return response()->success(['deleted' => $this->productRepository->delete($product)]);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            return response()->error(__('product.delete.error'));
+
+        }
     }
 }

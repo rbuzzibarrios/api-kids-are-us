@@ -9,6 +9,12 @@ return [
         'success' => 'Product updated successfully.',
         'error' => 'An error occurred updating product.',
     ],
+    'show' => [
+        'error' => 'An error occurred getting product.',
+    ],
+    'delete' => [
+        'error' => 'An error occurred deleting product.',
+    ],
     'validations' => [
         'valid_input_update' => 'Valid attributes are required to update the product.',
     ],
