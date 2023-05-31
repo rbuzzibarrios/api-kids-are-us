@@ -11,6 +11,9 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 {
     protected string $model = Product::class;
 
+    /**
+     * @var array
+     */
     protected $searchable = [
         'name',
         'sku',

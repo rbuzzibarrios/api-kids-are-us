@@ -58,7 +58,7 @@ class SearchProductTest extends TestCase
         ]))->assertOk()->assertJsonCount(0, 'products.data');
     }
 
-    public function test_should_validate_request()
+    public function test_should_validate_request(): void
     {
         $this->actingAs($this->user);
 
@@ -87,7 +87,7 @@ class SearchProductTest extends TestCase
                 })->etc())->etc());
 
         /** @var Product $product */
-        $product = Product::factory()->hasStock(1, ['quantity' => 2])->createQuietly();
+        $product = Product::factory()->hasStock(1, ['quantity' => 2])->createQuietly(); // @phpstan-ignore-line
 
         $this->getJson(route('search.product', [
             ...Arr::only($product->toArray(), ['name', 'sku', 'rate']),
@@ -109,8 +109,8 @@ class SearchProductTest extends TestCase
 
         $nameSuffix = $this->faker->unique()->numerify('###');
 
-        Product::factory()
-            ->count(28)
+        Product::factory()  // @phpstan-ignore-line
+        ->count(28)
             ->hasStock(1, ['quantity' => 2])
             ->create(['name' => "A lot of products {$nameSuffix}"]);
 

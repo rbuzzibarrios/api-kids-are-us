@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\SearchProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 
 class SearchProductController extends Controller
@@ -13,7 +14,7 @@ class SearchProductController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(SearchProductRequest $request, ProductRepositoryInterface $productRepository)
+    public function __invoke(SearchProductRequest $request, ProductRepositoryInterface $productRepository): JsonResponse
     {
         $products = [];
 
@@ -40,7 +41,7 @@ class SearchProductController extends Controller
         }
 
         if ($comparison === 'contains') {
-            $products = $productRepository->addScopeQuery(function (Builder $query) use ($request, $validated) {
+            $products = $productRepository->addScopeQuery(function (Builder $query) use ($validated) {
 
                 $filters = Arr::except($validated, [
                     'comparison',
