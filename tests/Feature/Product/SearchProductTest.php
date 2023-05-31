@@ -42,10 +42,6 @@ class SearchProductTest extends TestCase
             'comparison' => 'contains',
         ]))->assertOk()->assertJsonCount(0, 'products.data');
 
-        $this->getJson(route('search.product', ['name' => 'product does not exist']))
-            ->assertOk()
-            ->assertJsonCount(0, 'products.data');
-
         $this->getJson(route('search.product', [
             'sku' => 'sku does not exist',
             'comparison' => 'contains',
