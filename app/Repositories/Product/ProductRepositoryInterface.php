@@ -3,6 +3,7 @@
 namespace App\Repositories\Product;
 
 use Closure;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Torann\LaravelRepository\Contracts\RepositoryContract;
 
 interface ProductRepositoryInterface extends RepositoryContract
@@ -14,4 +15,6 @@ interface ProductRepositoryInterface extends RepositoryContract
      * @return static
      */
     public function addScopeQuery(Closure $scope);
+
+    public function applySearch(array $queries): LengthAwarePaginator;
 }

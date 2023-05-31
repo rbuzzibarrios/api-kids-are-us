@@ -3,6 +3,8 @@
 namespace App\Repositories\Product;
 
 use App\Models\Product;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Torann\LaravelRepository\Repositories\AbstractRepository;
@@ -38,5 +40,44 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         $productAttributes = Arr::except($attributes, 'quantity');
 
         return parent::update($entity, $productAttributes);
+    }
+
+    public function applySearch(array $queries): LengthAwarePaginator
+    {
+        if ($query = Arr::get($queries, 'query', null)) {
+            return $this->search($query)->paginate();
+        }
+
+        if (empty($queries) && ! empty(request()->all())) {
+            return $this->paginate();
+        }
+
+        $comparison = Arr::get($queries, 'comparison', 'strict');
+
+        if (empty($comparison) || $comparison === 'strict') {
+            return $this->search(Arr::except($queries, ['comparison']))->paginate();
+        }
+
+        if ($comparison === 'contains') {
+            return $this->addScopeQuery(function (Builder $query) use ($queries) {
+
+                $filters = Arr::except($queries, [
+                    'comparison',
+                    'category',
+                    'quantity',
+                    'price',
+                    'page',
+                    'skipPage',
+                ]);
+
+                foreach ($filters as $column => $value) {
+                    $query->where($query->qualifyColumn($column), 'LIKE', "%{$value}%");
+                }
+
+                return $query;
+            })->search(Arr::only($queries, ['category', 'quantity']))->paginate();
+        }
+
+        return $this->paginate();
     }
 }

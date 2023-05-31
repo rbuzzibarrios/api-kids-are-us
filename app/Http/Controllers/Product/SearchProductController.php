@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\SearchProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class SearchProductController extends Controller
 {
@@ -16,50 +15,14 @@ class SearchProductController extends Controller
      */
     public function __invoke(SearchProductRequest $request, ProductRepositoryInterface $productRepository): JsonResponse
     {
-        $products = [];
-
-        if ($request->has('query')) {
-            $products = $productRepository->search($request->get('query'))->paginate();
+        try {
+            $products = $productRepository->applySearch($request->validated());
 
             return response()->success(compact('products'));
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            return response()->error(__('product.search.error'));
         }
-
-        $validated = $request->validated();
-
-        if (empty($validated) && ! empty($request->all())) {
-            return response()->success(compact('products'));
-        }
-
-        $comparison = $request->get('comparison', 'strict');
-
-        if (empty($comparison) || $comparison === 'strict') {
-            $products = $productRepository->search(
-                Arr::except($validated, ['comparison'])
-            )->paginate();
-
-            return response()->success(compact('products'));
-        }
-
-        if ($comparison === 'contains') {
-            $products = $productRepository->addScopeQuery(function (Builder $query) use ($validated) {
-
-                $filters = Arr::except($validated, [
-                    'comparison',
-                    'category',
-                    'quantity',
-                    'price',
-                    'page',
-                    'skipPage',
-                ]);
-
-                foreach ($filters as $column => $value) {
-                    $query->where($query->qualifyColumn($column), 'LIKE', "%{$value}%");
-                }
-
-                return $query;
-            })->search($request->validated(['category', 'quantity']))->paginate();
-        }
-
-        return response()->success(compact('products'));
     }
 }
