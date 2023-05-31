@@ -15,7 +15,11 @@ return [
     'delete' => [
         'error' => 'An error occurred deleting product.',
     ],
+    'search' => [
+        'error' => 'An error occurred searching products.',
+    ],
     'validations' => [
         'valid_input_update' => 'Valid attributes are required to update the product.',
+        'comparison_required' => 'The :attribute field requires at least one valid attribute to apply the filter.',
     ],
 ];

@@ -19,7 +19,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->text('100'),
-            'sku' => $this->faker->numerify('#######'),
+            'sku' => $this->faker->unique()->numerify('#######'),
             'price' => $this->faker->numberBetween(1, 5000),
             'product_category_id' => ProductCategory::pluck('id')->random(),
             'tags' => [$this->faker->lexify, $this->faker->lexify],

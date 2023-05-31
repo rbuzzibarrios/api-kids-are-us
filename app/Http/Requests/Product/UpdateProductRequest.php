@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
@@ -28,12 +28,12 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string'],
-            'price' => ['sometimes', 'decimal:0,2'],
-            'quantity' => ['sometimes', 'numeric', 'min:1', 'max:99999999'],
-            'category' => ['sometimes', 'integer', 'exists:product_categories,id'],
+            'name' => ['sometimes', 'required', 'string'],
+            'price' => ['sometimes', 'required', 'decimal:0,2'],
+            'quantity' => ['sometimes', 'required', 'numeric', 'min:1', 'max:99999999'],
+            'category' => ['sometimes', 'required', 'integer', 'exists:product_categories,id'],
             'tags' => ['sometimes', 'array'],
-            'tags.*' => ['sometimes', 'string'],
+            'tags.*' => ['sometimes', 'required', 'string'],
             'description' => ['sometimes', 'string'],
             'additional_information' => ['sometimes', 'string'],
             'rate' => ['sometimes', 'int', 'max:5'],
