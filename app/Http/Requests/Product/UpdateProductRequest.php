@@ -28,17 +28,17 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string'],
-            'price' => ['sometimes', 'decimal:0,2'],
-            'quantity' => ['sometimes', 'numeric', 'min:1', 'max:99999999'],
-            'category' => ['sometimes', 'integer', 'exists:product_categories,id'],
-            'tags' => ['sometimes', 'array'],
-            'tags.*' => ['sometimes', 'string'],
-            'description' => ['sometimes', 'string'],
+            'name'                   => ['sometimes', 'required', 'string'],
+            'price'                  => ['sometimes', 'required', 'decimal:0,2'],
+            'quantity'               => ['sometimes', 'required', 'numeric', 'min:1', 'max:99999999'],
+            'category'               => ['sometimes', 'required', 'integer', 'exists:product_categories,id'],
+            'tags'                   => ['sometimes', 'array'],
+            'tags.*'                 => ['sometimes', 'required', 'string'],
+            'description'            => ['sometimes', 'string'],
             'additional_information' => ['sometimes', 'string'],
-            'rate' => ['sometimes', 'int', 'max:5'],
-            'images' => ['sometimes', 'array', 'max:4'],
-            'images.*' => ['sometimes', 'url'],
+            'rate'                   => ['sometimes', 'int', 'max:5'],
+            'images'                 => ['sometimes', 'array', 'max:4'],
+            'images.*'               => ['sometimes', 'url'],
         ];
     }
 

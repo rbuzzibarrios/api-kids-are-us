@@ -16,6 +16,7 @@ return [
         'error' => 'An error occurred deleting product.',
     ],
     'validations' => [
-        'valid_input_update' => 'Valid attributes are required to update the product.',
+        'valid_input_update'  => 'Valid attributes are required to update the product.',
+        'comparison_required' => 'The :attribute field requires at least one valid attribute to apply the filter.',
     ],
 ];

@@ -14,17 +14,19 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
     protected $searchable = [
         'name',
         'sku',
-        //        'price',
+        'price',
         'rate',
-        'quantity',
+        'quantity' => 'product_stock:quantity,product_id,id',
         'description',
         'additional_information',
         'category' => 'product_category_id',
-        'query' => [
+        'query'    => [
             'name',
             'sku',
             'description',
             'additional_information',
+            'price',
+            'rate',
         ],
     ];
 

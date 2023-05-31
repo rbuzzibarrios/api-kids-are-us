@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\SearchProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class SearchProductController extends Controller
@@ -24,27 +23,40 @@ class SearchProductController extends Controller
             return response()->success(compact('products'));
         }
 
+        $validated = $request->validated();
+
+        if (empty($validated) && !empty($request->all())) {
+            return response()->success(compact('products'));
+        }
+
         $comparison = $request->get('comparison', 'strict');
 
         if (empty($comparison) || $comparison === 'strict') {
             $products = $productRepository->search(
-                Arr::except($request->validated(), ['query', 'comparison'])
+                Arr::except($validated, ['comparison'])
             )->paginate();
 
             return response()->success(compact('products'));
         }
 
         if ($comparison === 'contains') {
-            $products = $productRepository->addScopeQuery(function (Builder $query) use ($request) {
+            $products = $productRepository->addScopeQuery(function (Builder $query) use ($request, $validated) {
 
-                $filters = Arr::except($request->validated(), ['query', 'comparison', 'category']);
+                $filters = Arr::except($validated, [
+                    'comparison',
+                    'category',
+                    'quantity',
+                    'price',
+                    'page',
+                    'skipPage',
+                ]);
 
                 foreach ($filters as $column => $value) {
                     $query->where($query->qualifyColumn($column), 'LIKE', "%{$value}%");
                 }
 
                 return $query;
-            })->search([])->paginate();
+            })->search($request->validated(['category', 'quantity']))->paginate();
         }
 
         return response()->success(compact('products'));

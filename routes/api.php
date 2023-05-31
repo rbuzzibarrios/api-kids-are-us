@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
     Route::get('product/{product}', [ProductController::class, 'show'])
         ->name('show.product')
         ->withoutMiddleware('role:administrator|editor');
+    Route::get('products/search', [SearchProductController::class, '__invoke'])
+        ->name('search.product')
+        ->withoutMiddleware('role:administrator|editor');
 });
-
-Route::get('product/search', [SearchProductController::class, '__invoke'])
-    ->name('search.product');
