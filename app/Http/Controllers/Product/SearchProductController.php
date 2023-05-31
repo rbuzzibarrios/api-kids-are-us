@@ -26,7 +26,7 @@ class SearchProductController extends Controller
 
         $validated = $request->validated();
 
-        if (empty($validated) && !empty($request->all())) {
+        if (empty($validated) && ! empty($request->all())) {
             return response()->success(compact('products'));
         }
 

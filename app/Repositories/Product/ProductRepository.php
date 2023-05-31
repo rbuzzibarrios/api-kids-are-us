@@ -23,7 +23,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         'description',
         'additional_information',
         'category' => 'product_category_id',
-        'query'    => [
+        'query' => [
             'name',
             'sku',
             'description',

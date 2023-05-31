@@ -19,7 +19,7 @@ class SearchProductRequest extends FormRequest
     public function after(): array
     {
         return [
-            fn(Validator $validator) => $this->filledAtLeastOneAttributeIfComparisonIsPresent(),
+            fn (Validator $validator) => $this->filledAtLeastOneAttributeIfComparisonIsPresent(),
         ];
     }
 
@@ -29,18 +29,18 @@ class SearchProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'                   => ['nullable', 'string', 'max:250'],
-            'sku'                    => ['nullable', 'string', 'max:250'],
-            'quantity'               => ['nullable', 'integer'],
-            'category'               => ['nullable', 'int', 'max:250'],
-            'description'            => ['nullable', 'string', 'max:250'],
+            'name' => ['nullable', 'string', 'max:250'],
+            'sku' => ['nullable', 'string', 'max:250'],
+            'quantity' => ['nullable', 'integer'],
+            'category' => ['nullable', 'int', 'max:250'],
+            'description' => ['nullable', 'string', 'max:250'],
             'additional_information' => ['nullable', 'string', 'max:250'],
-            'rate'                   => ['nullable', 'int', 'max:5'],
-            'price'                  => ['nullable'],
-            'query'                  => ['sometimes', 'required'],
-            'page'                   => ['sometimes', 'required', 'integer'],
-            'skipCache'              => ['sometimes', 'required', 'boolean'],
-            'comparison'             => ['bail', 'nullable', 'in:strict,contains,'], // strict, contains
+            'rate' => ['nullable', 'int', 'max:5'],
+            'price' => ['nullable'],
+            'query' => ['sometimes', 'required'],
+            'page' => ['sometimes', 'required', 'integer'],
+            'skipCache' => ['sometimes', 'required', 'boolean'],
+            'comparison' => ['bail', 'nullable', 'in:strict,contains,'], // strict, contains
         ];
     }
 
@@ -48,10 +48,10 @@ class SearchProductRequest extends FormRequest
     {
         $this->getValidatorInstance()->errors()->addIf(
             $validInput = $this->has('comparison') && empty(Arr::except($this->validated(),
-                    ['query', 'comparison'])),
+                ['query', 'comparison'])),
             'comparison', __('product.validations.comparison_required', ['attribute' => 'comparison'])
         );
 
-        return !$validInput;
+        return ! $validInput;
     }
 }

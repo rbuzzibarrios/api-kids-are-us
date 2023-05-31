@@ -39,7 +39,7 @@ class SearchProductTest extends TestCase
             ->assertJsonCount(0, 'products.data');
 
         $this->getJson(route('search.product', [
-            'name'       => 'product does not exist',
+            'name' => 'product does not exist',
             'comparison' => 'contains',
         ]))->assertOk()->assertJsonCount(0, 'products.data');
 
@@ -48,12 +48,12 @@ class SearchProductTest extends TestCase
             ->assertJsonCount(0, 'products.data');
 
         $this->getJson(route('search.product', [
-            'sku'        => 'sku does not exist',
+            'sku' => 'sku does not exist',
             'comparison' => 'contains',
         ]))->assertOk()->assertJsonCount(0, 'products.data');
 
         $this->getJson(route('search.product', [
-            'sku'        => 'sku does not exist',
+            'sku' => 'sku does not exist',
             'comparison' => 'strict',
         ]))->assertOk()->assertJsonCount(0, 'products.data');
     }
@@ -81,8 +81,8 @@ class SearchProductTest extends TestCase
 
         $this->getJson(route('search.product', []))
             ->assertOk()
-            ->assertJson(fn(AssertableJson $json) => $json->has('products',
-                fn(AssertableJson $json) => $json->where('total', function ($total) {
+            ->assertJson(fn (AssertableJson $json) => $json->has('products',
+                fn (AssertableJson $json) => $json->where('total', function ($total) {
                     return $total > 0;
                 })->etc())->etc());
 
@@ -110,15 +110,15 @@ class SearchProductTest extends TestCase
         $nameSuffix = $this->faker->unique()->numerify('###');
 
         Product::factory()  // @phpstan-ignore-line
-        ->count(28)
+            ->count(28)
             ->hasStock(1, ['quantity' => 2])
             ->create(['name' => "A lot of products {$nameSuffix}"]);
 
         $this->getJson(route('search.product', ['name' => 'A lot of products', 'comparison' => 'contains']))
             ->assertOk()
             ->assertJsonCount(config('repositories.per_page'), 'products.data')
-            ->assertJson(fn(AssertableJson $json) => $json->has('products',
-                fn(AssertableJson $json) => $json
+            ->assertJson(fn (AssertableJson $json) => $json->has('products',
+                fn (AssertableJson $json) => $json
                     ->where('current_page', 1)
                     ->where('per_page', config('repositories.per_page'))
                     ->where('total', 28)
@@ -129,8 +129,8 @@ class SearchProductTest extends TestCase
             ['name' => 'A lot of products', 'comparison' => 'contains', 'page' => 2]))
             ->assertOk()
             ->assertJsonCount(config('repositories.per_page'), 'products.data')
-            ->assertJson(fn(AssertableJson $json) => $json->has('products',
-                fn(AssertableJson $json) => $json
+            ->assertJson(fn (AssertableJson $json) => $json->has('products',
+                fn (AssertableJson $json) => $json
                     ->where('current_page', 2)
                     ->where('per_page', config('repositories.per_page'))
                     ->where('total', 28)
@@ -141,8 +141,8 @@ class SearchProductTest extends TestCase
             ['name' => 'A lot of products', 'comparison' => 'contains', 'page' => 3]))
             ->assertOk()
             ->assertJsonCount(8, 'products.data')
-            ->assertJson(fn(AssertableJson $json) => $json->has('products',
-                fn(AssertableJson $json) => $json
+            ->assertJson(fn (AssertableJson $json) => $json->has('products',
+                fn (AssertableJson $json) => $json
                     ->where('current_page', 3)
                     ->where('per_page', config('repositories.per_page'))
                     ->where('total', 28)
