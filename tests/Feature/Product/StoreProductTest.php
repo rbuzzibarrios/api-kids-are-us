@@ -5,7 +5,6 @@ namespace Tests\Feature\Product;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -13,7 +12,7 @@ use Tests\TestCase;
 
 class StoreProductTest extends TestCase
 {
-    use WithFaker, DatabaseTransactions;
+    use WithFaker;
 
     public function test_should_validate_require_fields(): void
     {

@@ -7,7 +7,6 @@ use App\Models\User;
 use Arr;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -16,7 +15,7 @@ use Tests\TestCase;
 
 class SearchProductTest extends TestCase
 {
-    use WithFaker, DatabaseTransactions;
+    use WithFaker;
 
     /**
      * @var User|User[]|Collection|Model|_IH_User_C|mixed
