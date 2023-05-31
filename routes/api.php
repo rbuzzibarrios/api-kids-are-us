@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginUserController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Product\SearchProductController;
+use App\Http\Controllers\Product\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,9 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
     Route::put('product/{product}', [ProductController::class, 'update'])->name('update.product');
     Route::delete('product/{product}', [ProductController::class, 'destroy'])->name('delete.product');
     Route::get('product/{product}', [ProductController::class, 'show'])
-        ->name('update.show')
+        ->name('show.product')
         ->withoutMiddleware('role:administrator|editor');
 });
+
+Route::get('product/search', [SearchProductController::class, '__invoke'])
+    ->name('search.product');

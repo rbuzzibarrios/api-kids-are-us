@@ -11,6 +11,23 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 {
     protected string $model = Product::class;
 
+    protected $searchable = [
+        'name',
+        'sku',
+//        'price',
+        'rate',
+        'quantity',
+        'description',
+        'additional_information',
+        'category' => 'product_category_id',
+        'query' => [
+            'name',
+            'sku',
+            'description',
+            'additional_information',
+        ],
+    ];
+
     public function update(Model $entity, array $attributes): bool
     {
         $productAttributes = Arr::except($attributes, 'quantity');
