@@ -14,7 +14,7 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
     protected $searchable = [
         'name',
         'sku',
-//        'price',
+        //        'price',
         'rate',
         'quantity',
         'description',

@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginUserController;
-use App\Http\Controllers\Product\SearchProductController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Product\SearchProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
