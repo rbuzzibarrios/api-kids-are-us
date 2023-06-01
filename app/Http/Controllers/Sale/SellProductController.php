@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class SellProductController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function __invoke(
         SellProductRequest $request,
         Product $product,
