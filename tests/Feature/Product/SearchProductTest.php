@@ -107,7 +107,7 @@ class SearchProductTest extends TestCase
         Product::factory()  // @phpstan-ignore-line
             ->count(28)
             ->hasStock(1, ['quantity' => 2])
-            ->create(['name' => "A lot of products {$nameSuffix}"]);
+            ->createQuietly(['name' => "A lot of products {$nameSuffix}"]);
 
         $this->getJson(route('search.product', ['name' => 'A lot of products', 'comparison' => 'contains']))
             ->assertOk()
@@ -143,5 +143,38 @@ class SearchProductTest extends TestCase
                     ->where('total', 28)
                     ->etc())
                 ->etc());
+    }
+
+    public function test_should_return_search_product_total(): void
+    {
+        $this->actingAs($this->user);
+
+        Product::factory(10)->hasStock(1)->createQuietly(['name' => 'ten products to get total']);// @phpstan-ignore-line
+        Product::factory(7)->hasStock(1)->createQuietly(['name' => 'more ten products to get total']);// @phpstan-ignore-line
+        Product::factory(17)->hasStock(1)->createQuietly(['name' => 'and more ten products to get total']);// @phpstan-ignore-line
+
+        $this->getJson(route('search.product.count', ['name' => 'ten products to get total']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 10)->etc());
+
+        $this->getJson(route('search.product.count', ['name' => 'more ten products to get total']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 7)->etc());
+
+        $this->getJson(route('search.product.count', ['name' => 'and more ten products to get total']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 17)->etc());
+
+        $this->getJson(route('search.product.count', ['name' => 'ten products to get total', 'comparison' => 'contains']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 34)->etc());
+
+        $this->getJson(route('search.product.count', ['name' => 'more ten products ', 'comparison' => 'contains']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 24)->etc());
+
+        $this->getJson(route('search.product.count', ['name' => 'and more ten products ', 'comparison' => 'contains']))
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json->where('total', 17)->etc());
     }
 }
