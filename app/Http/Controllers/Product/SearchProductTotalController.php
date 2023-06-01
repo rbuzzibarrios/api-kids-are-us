@@ -8,7 +8,7 @@ use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
-class SearchProductController extends Controller
+class SearchProductTotalController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -16,9 +16,9 @@ class SearchProductController extends Controller
     public function __invoke(SearchProductRequest $request, ProductRepositoryInterface $productRepository): JsonResponse
     {
         try {
-            $products = $productRepository->applySearch($request->validated())->paginate();
+            $total = $productRepository->applySearch($request->validated())->count();
 
-            return response()->success(compact('products'));
+            return response()->success(compact('total'));
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
 

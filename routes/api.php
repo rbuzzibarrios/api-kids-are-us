@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\SearchProductController;
+use App\Http\Controllers\Product\SearchProductTotalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +33,8 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
         ->withoutMiddleware('role:administrator|editor');
     Route::get('products/search', [SearchProductController::class, '__invoke'])
         ->name('search.product')
+        ->withoutMiddleware('role:administrator|editor');
+    Route::get('products/search/total', [SearchProductTotalController::class, '__invoke'])
+        ->name('search.product.count')
         ->withoutMiddleware('role:administrator|editor');
 });
