@@ -11,16 +11,18 @@ class ProductSale extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['quantity', 'purchaser_id', 'total_price'];
+
     //region relations
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
     public function purchaser(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'purchaser_id', 'id');
     }
 
     //endregion
