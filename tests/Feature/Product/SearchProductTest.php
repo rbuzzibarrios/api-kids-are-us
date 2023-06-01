@@ -149,9 +149,9 @@ class SearchProductTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        Product::factory(10)->hasStock(1)->createQuietly(['name' => 'ten products to get total']);// @phpstan-ignore-line
-        Product::factory(7)->hasStock(1)->createQuietly(['name' => 'more ten products to get total']);// @phpstan-ignore-line
-        Product::factory(17)->hasStock(1)->createQuietly(['name' => 'and more ten products to get total']);// @phpstan-ignore-line
+        Product::factory(10)->hasStock(1)->createQuietly(['name' => 'ten products to get total']); // @phpstan-ignore-line
+        Product::factory(7)->hasStock(1)->createQuietly(['name' => 'more ten products to get total']); // @phpstan-ignore-line
+        Product::factory(17)->hasStock(1)->createQuietly(['name' => 'and more ten products to get total']); // @phpstan-ignore-line
 
         $this->getJson(route('search.product.count', ['name' => 'ten products to get total']))
             ->assertOk()
