@@ -4,6 +4,7 @@ namespace App\Repositories\Product;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Arr;
@@ -94,14 +95,13 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         return $product->load(['stock', 'sales'])->refresh();
     }
 
-    public function sold(): array
+    public function sold(): Builder|Collection
     {
         return $this
             ->getModel()
             ->newQuery()
             ->with('category')
             ->sold()
-            ->get()
-            ->toArray();
+            ->get();
     }
 }
