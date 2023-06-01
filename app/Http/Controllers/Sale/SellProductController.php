@@ -19,11 +19,17 @@ class SellProductController extends Controller
         ProductRepositoryInterface $productRepository
     ) {
         try {
+            \DB::beginTransaction();
+
             $productRepository->sell($product, \Auth::user(), $request->validated('qty'));
+
+            \DB::commit();
 
             return response()->success(['message' => __('sale.create.success')]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
+
+            \DB::rollBack();
 
             return response()->error(__('sale.create.error'));
         }
