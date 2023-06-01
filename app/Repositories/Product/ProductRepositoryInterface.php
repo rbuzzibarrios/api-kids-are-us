@@ -28,4 +28,6 @@ interface ProductRepositoryInterface extends RepositoryContract
     public function count(array $columns = ['*']);
 
     public function sell(Product $product, Authenticatable $purchaser, int $quantity = 1): Product;
+
+    public function sold(): array;
 }

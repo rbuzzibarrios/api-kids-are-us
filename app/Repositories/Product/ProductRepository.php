@@ -93,4 +93,15 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
         return $product->load(['stock', 'sales'])->refresh();
     }
+
+    public function sold(): array
+    {
+        return $this
+            ->getModel()
+            ->newQuery()
+            ->with('category')
+            ->sold()
+            ->get()
+            ->toArray();
+    }
 }
