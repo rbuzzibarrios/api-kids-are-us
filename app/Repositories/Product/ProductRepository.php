@@ -97,10 +97,10 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
     public function sold(): Builder|Collection
     {
-        return $this
+        return $this // @phpstan-ignore-line
             ->getModel()
             ->newQuery()
-            ->with('category')
+            ->with(['category', 'sales'])
             ->sold()
             ->get();
     }

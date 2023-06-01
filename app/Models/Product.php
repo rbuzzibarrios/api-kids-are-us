@@ -65,7 +65,7 @@ class Product extends Model
 
     //region scopes
 
-    public function scopeSold(Builder $query)
+    public function scopeSold(Builder $query): void
     {
         $query->has('sales');
     }
