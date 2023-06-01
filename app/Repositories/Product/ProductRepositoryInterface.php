@@ -18,7 +18,10 @@ interface ProductRepositoryInterface extends RepositoryContract
     public function applySearch(array $queries): ProductRepositoryInterface;
 
     /**
-     * @param  array|string[]  $columns
+     * Retrieve the "count" result of the query.
+     *
+     *
+     * @return int
      */
-    public function count(array $columns = ['*']): int;
+    public function count(array $columns = ['*']);
 }
