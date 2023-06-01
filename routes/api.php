@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\SearchProductController;
 use App\Http\Controllers\Product\SearchProductTotalController;
+use App\Http\Controllers\Sale\ProductSoldListController;
 use App\Http\Controllers\Sale\SellProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,16 +36,22 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
             ->withoutMiddleware('role:administrator|editor');
     });
 
-    Route::prefix('products')->group(function () {
-        Route::get('/search', [SearchProductController::class, '__invoke'])
-            ->name('search.product')
-            ->withoutMiddleware('role:administrator|editor');
-        Route::get('/search/total', [SearchProductTotalController::class, '__invoke'])
-            ->name('search.product.count')
-            ->withoutMiddleware('role:administrator|editor');
-    });
+    Route::prefix('products')
+        ->withoutMiddleware('role:administrator|editor')
+        ->group(function () {
+            Route::get('/search', [SearchProductController::class, '__invoke'])
+                ->name('search.product');
+            Route::get('/search/total', [SearchProductTotalController::class, '__invoke'])
+                ->name('search.product.count');
+            Route::get('/search/total', [SearchProductTotalController::class, '__invoke'])
+                ->name('search.product.count');
+        });
 
     Route::put('sell/{product}', [SellProductController::class, '__invoke'])
         ->name('sell.product')
+        ->withoutMiddleware('role:administrator|editor');
+
+    Route::get('sold', [ProductSoldListController::class, '__invoke'])
+        ->name('product.sold.list')
         ->withoutMiddleware('role:administrator|editor');
 });

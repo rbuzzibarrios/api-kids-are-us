@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,12 @@ class Product extends Model
         'title',
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getRouteKeyName(): string
     {
         return 'sku';
@@ -55,6 +62,15 @@ class Product extends Model
             }
         });
     }
+
+    //region scopes
+
+    public function scopeSold(Builder $query): void
+    {
+        $query->has('sales');
+    }
+
+    //endregion
 
     //region accessors and mutators
 
