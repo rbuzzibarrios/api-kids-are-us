@@ -45,6 +45,6 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
     });
 
     Route::put('sell/{product}', [SellProductController::class, '__invoke'])
-        ->name('sale.product')
+        ->name('sell.product')
         ->withoutMiddleware('role:administrator|editor');
 });
