@@ -25,13 +25,13 @@ class SellProductController extends Controller
 
             \DB::commit();
 
-            return response()->success(['message' => __('sale.create.success')]);
+            return response()->success(['message' => __('sale.store.success')]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage(), [$exception->getTraceAsString()]);
 
             \DB::rollBack();
 
-            return response()->error(__('sale.create.error'));
+            return response()->error(__('sale.store.error'));
         }
     }
 }
