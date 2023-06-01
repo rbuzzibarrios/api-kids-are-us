@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('quantity')->default(1);
+            $table->decimal('total_price');
 
             $table->foreignId('product_id')
                 ->constrained('products')

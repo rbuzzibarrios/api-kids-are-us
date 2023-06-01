@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Arr;
 use Torann\LaravelRepository\Repositories\AbstractRepository;
 
@@ -78,5 +79,18 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
         }
 
         return $this;
+    }
+
+    public function sell(Product $product, Authenticatable $purchaser, int $quantity = 1): Product
+    {
+        $product->stock()->decrement('quantity', $quantity);
+
+        $product->sales()->create([
+            'purchaser_id' => $purchaser->id,
+            'total_price' => $product->price,
+            ...compact('quantity'),
+        ])->save();
+
+        return $product->load(['stock', 'sales'])->refresh();
     }
 }
