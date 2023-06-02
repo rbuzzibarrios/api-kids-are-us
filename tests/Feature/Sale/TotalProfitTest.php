@@ -3,9 +3,12 @@
 namespace Tests\Feature\Sale;
 
 use App\Models\Product;
+use App\Models\ProductSale;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelIdea\Helper\App\Models\_IH_User_C;
 use Tests\TestCase;
 
@@ -29,13 +32,15 @@ class TotalProfitTest extends TestCase
 
         $user = User::factory()->createQuietly();
 
+        ProductSale::truncate();
+
         Product::factory() // @phpstan-ignore-line
-            ->hasStock(1, ['quantity' => 5])
+        ->hasStock(1, ['quantity' => 5])
             ->hasSales(2, ['total_price' => 10, 'purchaser_id' => $user->getAttribute('id')])
             ->createQuietly(['price' => 10]);
 
         Product::factory() // @phpstan-ignore-line
-            ->hasStock(1, ['quantity' => 6])
+        ->hasStock(1, ['quantity' => 6])
             ->hasSales(2, ['total_price' => 20, 'purchaser_id' => $user->getAttribute('id')])
             ->createQuietly(['price' => 20]);
 
@@ -43,7 +48,7 @@ class TotalProfitTest extends TestCase
             ->getJson(route('total-profit'))
             ->assertOk()
             ->assertJson([
-                'status' => 'success',
+                'status'      => 'success',
                 'totalProfit' => 60,
             ]);
     }

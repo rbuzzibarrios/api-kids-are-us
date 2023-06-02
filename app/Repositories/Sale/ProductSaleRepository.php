@@ -9,6 +9,8 @@ class ProductSaleRepository extends AbstractRepository implements ProductSaleRep
 {
     protected string $model = ProductSale::class;
 
+    protected int $cacheMinutes = 1;
+
     public function totalProfit(): float
     {
         return $this->cacheCallback(__FUNCTION__, func_get_args(), function () {
