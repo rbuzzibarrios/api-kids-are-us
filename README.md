@@ -21,65 +21,51 @@ Install PHP dependencies:
 composer install --prefer-dist --no-progress --no-suggest
 ```
 
-[comment]: <> (Install NPM dependencies:)
-
-[comment]: <> (```sh)
-
-[comment]: <> (npm install)
-
-[comment]: <> (```)
-
-[comment]: <> (or)
-
-[comment]: <> (```sh)
-
-[comment]: <> (yarn install)
-
-[comment]: <> (```)
-
 Generate application key:
 
 ```sh
-sail php artisan key:generate
+php artisan key:generate
 ```
+
+Optimize application
 
 ```sh
-sail php artisan optimize
+php artisan optimize
 ```
-
-Create an MySQL database. You can also use another database (SQLite, Postgres), simply update your configuration accordingly.
-
-Run database migrations and database seeder:
+Create alias for sail command
 
 ```sh
-sail php artisan migrate:fresh --seed
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 ```
 
-Start the server:
-
-[comment]: <> (```sh)
-
-[comment]: <> (npm run dev)
-
-[comment]: <> (```)
-
-[comment]: <> (or)
-
-[comment]: <> (```sh)
-
-[comment]: <> (yarn dev)
-
-[comment]: <> (```)
-
-Run artisan server:
+Run Sail:
 
 ```sh
-sail up
+sail up -d
 ```
+
+### Open new terminal console
+
+Create alias for sail command
+
+```sh
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+```
+
+Run database migrations and database seeder, :
+
+```sh
+sail php artisan migrate --seed --force
+```
+
+### Deployed. 
+
+Visit: POST: [http://localhost/api/v1/login](http://localhost/api/v1/login) in Postman
+
 
 ## Running tests
 
-To run the Booking Event tests
+To run the API Kids Are Us tests
 
 ```sh
 cp .env.example .env.testing
