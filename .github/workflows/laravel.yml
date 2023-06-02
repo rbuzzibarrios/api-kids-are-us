@@ -113,7 +113,7 @@ jobs:
 
       - name: Running Functional and Unit Tests
         id: running-tests
-        run: php artisan test -p --coverage
+        run: php artisan test -p
 
       - name: Upload artifacts
         uses: actions/upload-artifact@master
