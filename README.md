@@ -74,20 +74,20 @@ cp .env.example .env.testing
 
 and run:
 
-```
+```sh
 sail php artisan optimize --env=testing
 ``` 
 
-```
+```sh
 sail php artisan migrate:fresh --seed --env=testing
 ```
 
-```
+```sh
 sail php artisan test --env=testing
 ```
 
 or to run parallel tests:
 
-```
+```sh
 sail php artisan test -p --env=testing
 ```
