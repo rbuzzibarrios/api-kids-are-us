@@ -14,6 +14,8 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 {
     protected string $model = Product::class;
 
+    protected int $cacheMinutes = 1;
+
     /**
      * @var array
      */
@@ -97,11 +99,15 @@ class ProductRepository extends AbstractRepository implements ProductRepositoryI
 
     public function sold(): Builder|Collection
     {
-        return $this // @phpstan-ignore-line
-            ->getModel()
-            ->newQuery()
-            ->with(['category', 'sales'])
-            ->sold()
-            ->get();
+        return $this->cacheCallback(__FUNCTION__, func_get_args(), function () {
+
+            $this->newQuery();
+
+            return $this // @phpstan-ignore-line
+                ->query
+                ->with(['category', 'sales'])
+                ->sold()
+                ->get();
+        });
     }
 }
