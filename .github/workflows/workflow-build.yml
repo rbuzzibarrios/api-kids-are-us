@@ -1,0 +1,91 @@
+name: Build workflow
+
+on:
+  workflow_call:
+    secrets:
+      test:
+        required: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['8.2']
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - uses: actions/checkout@v3
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        id: install-dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Dump autoload
+        id: dump-autoload
+        if: steps.composer-cache.outputs.cache-hit == 'true'
+        run: composer dump-autoload
+
+      - name: Generate key
+        id: generate-key
+        run: php artisan key:generate
+
+      - run: find storage -type f -exec chmod 644 {} \;
+      - run: find bootstrap/cache -type f -exec chmod 644 {} \;
+      - run: find storage -type d -exec chmod 755 {} \;
+      - run: find bootstrap/cache -type d -exec chmod 755 {} \;
+
+      - name: Optimze application
+        id: optimize-application
+        run: php artisan optimize
+
+      - name: Migrate database application
+        id: migrate-database-application
+        run: php artisan migrate:fresh
+
+      - name: Seed database application
+        id: seed-database-application
+        run: php artisan db:seed
+
+      - name: Start Api Web Server
+        id: start-server
+        run: php artisan serve &
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs

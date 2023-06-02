@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \Torann\LaravelRepository\RepositoryServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -168,6 +169,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        \App\Providers\RepositoryServiceProvider::class,
+        \App\Providers\ResponseServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -185,4 +188,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'api_version' => env('APP_API_VERSION', 1),
 ];
