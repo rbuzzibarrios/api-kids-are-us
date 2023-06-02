@@ -6,15 +6,11 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelIdea\Helper\App\Models\_IH_User_C;
 use Tests\TestCase;
 
 class SellProductTest extends TestCase
 {
-    use DatabaseMigrations, DatabaseTransactions;
-
     /**
      * @var User|User[]|Collection|Model|_IH_User_C|mixed
      */

@@ -6,6 +6,7 @@ use App\Http\Controllers\Product\SearchProductController;
 use App\Http\Controllers\Product\SearchProductTotalController;
 use App\Http\Controllers\Sale\ProductSoldListController;
 use App\Http\Controllers\Sale\SellProductController;
+use App\Http\Controllers\Sale\TotalProfitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,13 +46,16 @@ Route::middleware(['auth:sanctum', 'role:administrator|editor'])->group(function
                 ->name('search.product.count');
             Route::get('/search/total', [SearchProductTotalController::class, '__invoke'])
                 ->name('search.product.count');
+            Route::get('sold', [ProductSoldListController::class, '__invoke'])
+                ->name('product.sold.list')
+                ->withoutMiddleware('role:administrator|editor');
         });
 
     Route::put('sell/{product}', [SellProductController::class, '__invoke'])
         ->name('sell.product')
         ->withoutMiddleware('role:administrator|editor');
 
-    Route::get('sold', [ProductSoldListController::class, '__invoke'])
-        ->name('product.sold.list')
+    Route::get('totalprofit', [TotalProfitController::class, '__invoke'])
+        ->name('total-profit')
         ->withoutMiddleware('role:administrator|editor');
 });

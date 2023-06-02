@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductSaleFactory extends Factory
@@ -15,6 +16,7 @@ class ProductSaleFactory extends Factory
     {
         return [
             'quantity' => 1,
+            'purchaser_id' => User::factory(),
         ];
     }
 }
