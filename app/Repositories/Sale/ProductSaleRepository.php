@@ -9,16 +9,12 @@ class ProductSaleRepository extends AbstractRepository implements ProductSaleRep
 {
     protected string $model = ProductSale::class;
 
-    protected int $cacheMinutes = 1;
-
     public function totalProfit(): float
     {
-        return $this->cacheCallback(__FUNCTION__, func_get_args(), function () {
-            $this->newQuery();
+        $this->newQuery();
 
-            return $this->query
-                ->selectRaw('SUM(total_price * quantity) as total_profit')
-                ->first(['total_profit'])->getAttribute('total_profit');
-        });
+        return $this->query
+            ->selectRaw('SUM(total_price * quantity) as total_profit')
+            ->first(['total_profit'])->getAttribute('total_profit');
     }
 }
